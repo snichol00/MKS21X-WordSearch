@@ -10,7 +10,12 @@ public class WordSearch{
     private int col;
 
     public WordSearch(int rows,int cols){
-      data = new char[rows][cols];
+      if (rows >= 0 && cols >= 0){
+        data = new char[rows][cols];
+      }
+      else{
+        throw new IllegalArgumentException();
+      }
       row = rows;
       col = cols;
       this.clear();
@@ -35,7 +40,7 @@ public class WordSearch{
         for (int y = 0; y < col; y++){
           output += data[x][y] + " ";
         }
-        output += "/n";
+        output += "\n";
       }
       return output;
     }
@@ -52,12 +57,17 @@ public class WordSearch{
      * or there are overlapping letters that do not match, then false is returned
      * and the board is NOT modified.
      */
-    public boolean addWordHorizontal(String word,int row, int col){
-      char[][] data2 = data;
+    public boolean addWordHorizontal(String word,int row1, int col1){
+      char[][] data2 = new char[row][col];
+      for (int x1 = 0; x1 < row; x1++){
+        for (int y1 = 0; y1 < col; y1++){
+          data2[x1][y1] = data2[x1][y1];
+        }
+      }
       for (int x = 0; x < word.length(); x++){
-        for (int y = 0; y < col; y++){
-          if (data2[row][y] == '_' || data2[row][y] == word.charAt(x)){
-            data2[row][y] = word.charAt(x);
+        for (int y = 0; y < col1; y++){
+          if (data2[row1][y] == '_' || data2[row1][y] == word.charAt(x)){
+            data2[row1][y] = word.charAt(x);
           }
           else{
             return false;
@@ -83,7 +93,12 @@ public class WordSearch{
      *and the board is NOT modified.
      */
     public boolean addWordVertical(String word,int row, int col){
-      char[][] data2 = data;
+      char[][] data2 = new char[row][col];
+      for (int x1 = 0; x1 < row; x1++){
+        for (int y1 = 0; y1 < col; y1++){
+          data2[x1][y1] = data[x1][y1];
+        }
+      }
       for (int x = 0; x < word.length(); x++){
         for (int y = 0; y < row; y++){
           if (data2[col][y] == '_' || data2[col][y] == word.charAt(x)){
@@ -93,9 +108,9 @@ public class WordSearch{
             return false;
           }
         }
-        if (x != word.length() - 1){
-          return false;
-        }
+        //if (x != word.length() - 1){
+          //return false;
+        //}
       }
       data = data2;
       return true;
