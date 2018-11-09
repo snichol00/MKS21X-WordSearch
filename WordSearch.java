@@ -57,27 +57,21 @@ public class WordSearch{
      * or there are overlapping letters that do not match, then false is returned
      * and the board is NOT modified.
      */
-    public boolean addWordHorizontal(String word,int row1, int col1){
-      char[][] data2 = new char[row][col];
-      for (int x1 = 0; x1 < row; x1++){
-        for (int y1 = 0; y1 < col; y1++){
-          data2[x1][y1] = data2[x1][y1];
-        }
+    public boolean addWordHorizontal(String word,int row, int col){
+      if (row < 0 || col < 0 || col >= data[0].length || row >= data.length){
+        return false;
+      }
+      if ((col + word.length()) > data[0].length){
+        return false;
       }
       for (int x = 0; x < word.length(); x++){
-        for (int y = 0; y < col1; y++){
-          if (data2[row1][y] == '_' || data2[row1][y] == word.charAt(x)){
-            data2[row1][y] = word.charAt(x);
-          }
-          else{
+          if (data[row][x + col] != '_' && data[row][x + col] != word.charAt(x)){
             return false;
           }
-        }
-        if (x != word.length() - 1){
-          return false;
-        }
       }
-      data = data2;
+      for (int y = 0; y < word.length(); y++){
+        data[row][col + y] = word.charAt(y);
+      }
       return true;
     }
 
@@ -93,26 +87,20 @@ public class WordSearch{
      *and the board is NOT modified.
      */
     public boolean addWordVertical(String word,int row, int col){
-      char[][] data2 = new char[row][col];
-      for (int x1 = 0; x1 < row; x1++){
-        for (int y1 = 0; y1 < col; y1++){
-          data2[x1][y1] = data[x1][y1];
-        }
+      if (row < 0 || col < 0 || col >= data[0].length || row >= data.length){
+        return false;
+      }
+      if ((row + word.length()) >= data.length){
+        return false;
       }
       for (int x = 0; x < word.length(); x++){
-        for (int y = 0; y < row; y++){
-          if (data2[col][y] == '_' || data2[col][y] == word.charAt(x)){
-            data2[col][y] = word.charAt(x);
-          }
-          else{
+          if (data[row + x][col] != '_' && data[row + x][col] != word.charAt(x)){
             return false;
           }
-        }
-        //if (x != word.length() - 1){
-          //return false;
-        //}
       }
-      data = data2;
+      for (int y = 0; y < word.length(); y++){
+        data[row + y][col] = word.charAt(y);
+      }
       return true;
     }
 }
