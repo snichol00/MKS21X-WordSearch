@@ -27,7 +27,7 @@ public class WordSearch{
     private int row;
     private int col;
 
-    public WordSearch(int rows,int cols){
+    /*public WordSearch(int rows,int cols){
       if (rows >= 0 && cols >= 0){
         data = new char[rows][cols];
       }
@@ -37,10 +37,10 @@ public class WordSearch{
       row = rows;
       col = cols;
       this.clear();
-    }
+    }*/
 
     //    Choose a randSeed using the clock random
-    public WordSearch( int rows, int cols, String fileName) {
+    /*public WordSearch( int rows, int cols, String fileName) {
       data = new char[rows][cols];
       clear();
       wordsAdded = new ArrayList<String>();
@@ -48,29 +48,35 @@ public class WordSearch{
       randgen = new Random();
       seed = randgen.nextInt();
       readFile(fileName);
-    }
+    }*/
 
     //  Use the random seed specified.
-    public WordSearch( int rows, int cols, String fileName, int randSeed){
+    public WordSearch( int rows, int cols, String fileName, int randSeed, boolean key){
       data = new char[rows][cols];
       clear();
       wordsAdded = new ArrayList<String>();
       wordsToAdd = new ArrayList<String>();
+      addAllWords();
       seed = randSeed;
+      randgen = new Random();
       readFile(fileName);
+      if (!key){
+        fillRandomLetters();
+      }
+      data.toString();
     }
 
     private void readFile(String fileName){
-      /*try{*/
+      try{
         File file = new File(fileName);
-        Scanner in = new Scanner(fileName);
+        Scanner in = new Scanner(file);
         while(in.hasNext()){
           wordsToAdd.add(in.next());
         }
-        /*addAllWords();
+        addAllWords();
       }catch(FileNotFoundException e){
         System.out.println("File not found: " + fileName);
-      }*/
+      }
     }
 
     /**Set all values in the WordSearch to underscores'_'*/
@@ -118,7 +124,7 @@ public class WordSearch{
      * or there are overlapping letters that do not match, then false is returned
      * and the board is NOT modified.
      */
-    private boolean addWordHorizontal(String word,int row, int col){
+    /*private boolean addWordHorizontal(String word,int row, int col){
       if (row < 0 || col < 0 || col >= data[0].length || row >= data.length){
         return false;
       }
@@ -134,7 +140,7 @@ public class WordSearch{
         data[row][col + y] = word.charAt(y);
       }
       return true;
-    }
+    }*/
 
    /**Attempts to add a given word to the specified position of the WordGrid.
      *The word is added from top to bottom, must fit on the WordGrid, and must
@@ -147,7 +153,7 @@ public class WordSearch{
      *or there are overlapping letters that do not match, then false is returned.
      *and the board is NOT modified.
      */
-    private boolean addWordVertical(String word,int row, int col){
+    /*private boolean addWordVertical(String word,int row, int col){
       if (row < 0 || col < 0 || col >= data[0].length || row >= data.length){
         return false;
       }
@@ -163,7 +169,7 @@ public class WordSearch{
         data[row + y][col] = word.charAt(y);
       }
       return true;
-    }
+    }*/
 
     /**Attempts to add a given word to the specified position of the WordGrid.
      *The word is added from top left to bottom right, must fit on the WordGrid,
@@ -175,7 +181,7 @@ public class WordSearch{
      *@return true when the word is added successfully. When the word doesn't fit,
      *or there are overlapping letters that do not match, then false is returned.
      */
-    private boolean addWordDiagonal(String word,int row, int col){
+    /*private boolean addWordDiagonal(String word,int row, int col){
        if (row < 0 || col < 0 || col >= data[0].length || row >= data.length){
          return false;
        }
@@ -183,21 +189,75 @@ public class WordSearch{
          return false;
        }
        for (int x = 0; x < word.length(); x++){
-           if (data[row + x][col + x] != '_' && data[row + x][col + x] != word.charAt(x)){
+            if (data[row + x][col + x] != '_' && data[row + x][col + x] != word.charAt(x)){
+              return false;
+            }
+        }
+        for (int y = 0; y < word.length(); y++){
+          data[row + y][col + y] = word.charAt(y);
+        }
+       return true;
+    }*/
+
+    private boolean addWord( String word, int r, int c, int rowIncrement, int colIncrement){
+      if (r < 0 || c < 0 || c >= data[0].length || r >= data.length){
+        return false;
+      }
+      if ((r + word.length()) > data.length || (c + word.length()) > data[0].length){
+        return false;
+      }
+      for (int x = 0; x < word.length(); x++){
+           if (data[r + rowIncrement][c + colIncrement] != '_' && data[r + rowIncrement][c + colIncrement] != word.charAt(x)){
              return false;
            }
        }
        for (int y = 0; y < word.length(); y++){
-         data[row + y][col + y] = word.charAt(y);
+         data[r + rowIncrement][c + colIncrement] = word.charAt(y);
        }
-       return true;
-    }
-
-    private boolean addWord( String word, int r, int c, int rowIncrement, int colIncrement){
       return true;
     }
 
     private void addAllWords() {
+      int colIncrement;
+      int rowIncrement;
+      int r;
+      int c;
+      while (wordsToAdd.size() > 0){
+        colIncrement = randgen.nextInt() % 2;
+        rowIncrement = randgen.nextInt() % 2;
+        if (rowIncrement == 1){
+          r = randgen.nextInt() % (row - wordsToAdd.get(0).length() + 1);
+        }
+        else if (rowIncrement == -1){
+          r = randgen.nextInt() % (row - wordsToAdd.get(0).length() + 1) + wordsToAdd.get(0).length();
+        }
+        else{
+          r = randgen.nextInt() % row;
+        }
+        if (colIncrement == 1){
+          c = randgen.nextInt() % (col - wordsToAdd.get(0).length() + 1);
+        }
+        else if (colIncrement == -1){
+          c = randgen.nextInt() % (col - wordsToAdd.get(0).length() + 1) + wordsToAdd.get(0).length();
+        }
+        else {
+          c = randgen.nextInt() % col;
+        }
+        if (addWord(wordsToAdd.get(0), r, c, rowIncrement , colIncrement)){
+          wordsAdded.add(wordsToAdd.get(0));
+          wordsToAdd.remove(0);
+        }
+      }
+    }
 
+    private void fillRandomLetters(){
+      int ran = randgen.nextInt() % 26;
+      char[] alphabet = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+      for (int x = 0; x < data.length; x++)
+        for (int y = 0; y < data[0].length; y++){
+          if (data[x][y] == '_'){
+            data[x][y] = alphabet[ran];
+          }
+        }
     }
 }
