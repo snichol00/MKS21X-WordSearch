@@ -256,19 +256,31 @@ public class WordSearch{
     }*/
 
     private boolean addWord( String word, int r, int c, int rowIncrement, int colIncrement){
-      if (r < 0 || c < 0 || c >= data[0].length || r >= data.length){
+      if (rowIncrement == 0 && colIncrement == 0){
         return false;
       }
-      if ((r + word.length()) > data.length || (c + word.length()) > data[0].length){
+      if (c >= data[0].length || r >= data.length){
         return false;
       }
+      if ((r + word.length() * rowIncrement) > data.length || (c + word.length() * colIncrement) > data[0].length){
+        return false;
+      }
+      if (((r + word.length() * rowIncrement) < 0) || (c + word.length() * colIncrement) < 0){
+        return false;
+      }
+      int therow = r;
+      int thecol = c;
       for (int x = 0; x < word.length(); x++){
-           if (data[r + rowIncrement][c + colIncrement] != '_' && data[r + rowIncrement][c + colIncrement] != word.charAt(x)){
+           if (data[therow + rowIncrement][thecol + colIncrement] != '_' && data[therow + rowIncrement][thecol + colIncrement] != word.charAt(x)){
              return false;
            }
+           therow += rowIncrement;
+           thecol += colIncrement;
        }
-       for (int y = 0; y < word.length(); y++){
+      for (int y = 0; y < word.length(); y++){
          data[r + rowIncrement][c + colIncrement] = word.charAt(y);
+         r += rowIncrement;
+         c += colIncrement;
        }
       return true;
     }
