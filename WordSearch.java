@@ -56,7 +56,6 @@ public class WordSearch{
       clear();
       wordsAdded = new ArrayList<String>();
       wordsToAdd = new ArrayList<String>();
-      addAllWords();
       seed = randSeed;
       randgen = new Random(randSeed);
       readFile(fileName);
@@ -69,12 +68,15 @@ public class WordSearch{
       }
       else if (params.length == 3){
         try{
-          int rows = Integer.parseInt(params[0]);
-          int cols = Integer.parseInt(params[1]);
+          int numrows = Integer.parseInt(params[0]);
+          int numcols = Integer.parseInt(params[1]);
           String fileName = params[2];
           Random rand = new Random();
-          int randomseed = rand.nextInt();
-          WordSearch ws = new WordSearch(rows, cols, fileName, randomseed);
+          int randomseed = rand.nextInt() % 10001;
+          if (randomseed < 0 || randomseed > 10000){
+            throw new Exception();
+          }
+          WordSearch ws = new WordSearch(numrows, numcols, fileName, randomseed);
           ws.fillRandomLetters();
           System.out.println(ws);
         }
@@ -84,14 +86,16 @@ public class WordSearch{
       }
       else if (params.length == 4){
         try{
-          int rows = Integer.parseInt(params[0]);
-          int cols = Integer.parseInt(params[1]);
+          int numrows = Integer.parseInt(params[0]);
+          int numcols = Integer.parseInt(params[1]);
           String fileName = params[2];
           int seed = Integer.parseInt(params[3]);
           if (seed < 0 || seed > 1000){
             throw new Exception();
           }
-          WordSearch ws = new WordSearch(rows, cols, fileName, seed);
+          WordSearch ws = new WordSearch(numrows, numcols, fileName, seed);
+          System.out.println("coolio");
+          System.out.println("cool");
           ws.fillRandomLetters();
           System.out.println(ws);
         }
@@ -101,14 +105,14 @@ public class WordSearch{
       }
       else {
         try{
-          int rows = Integer.parseInt(params[0]);
-          int cols = Integer.parseInt(params[1]);
+          int numrows = Integer.parseInt(params[0]);
+          int numcols = Integer.parseInt(params[1]);
           String fileName = params[2];
           int seed = Integer.parseInt(params[3]);
           if (seed < 0 || seed > 1000){
             throw new Exception();
           }
-          WordSearch ws = new WordSearch(rows, cols, fileName, seed);
+          WordSearch ws = new WordSearch(numrows, numcols, fileName, seed);
           ws.formatAnswers();
           System.out.println(ws);
         }
@@ -317,7 +321,7 @@ public class WordSearch{
       if (ran < 0){
         ran *= -1;
       }
-      char[] alphabet = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+      char[] alphabet = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
       for (int x = 0; x < data.length; x++)
         for (int y = 0; y < data[0].length; y++){
           if (data[x][y] == '_'){
