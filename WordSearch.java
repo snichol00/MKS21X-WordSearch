@@ -51,7 +51,7 @@ public class WordSearch{
     }*/
 
     //  Use the random seed specified.
-    public WordSearch( int rows, int cols, String fileName, int randSeed, boolean key){
+    public WordSearch( int rows, int cols, String fileName, int randSeed){
       data = new char[rows][cols];
       clear();
       wordsAdded = new ArrayList<String>();
@@ -67,14 +67,14 @@ public class WordSearch{
       if (params.length < 3){
         System.out.println("Inadequete number of arguments");
       }
-      if (params.length == 3){
+      else if (params.length == 3){
         try{
           int rows = Integer.parseInt(params[0]);
           int cols = Integer.parseInt(params[1]);
           String fileName = params[2];
           Random rand = new Random();
           int randomseed = rand.nextInt();
-          WordSearch ws = new WordSearch(rows, cols, fileName, randomseed, false);
+          WordSearch ws = new WordSearch(rows, cols, fileName, randomseed);
           ws.fillRandomLetters();
           System.out.println(ws);
         }
@@ -82,7 +82,7 @@ public class WordSearch{
           System.out.println("Formatting error. Review instructions");
         }
       }
-      if (params.length == 4){
+      else if (params.length == 4){
         try{
           int rows = Integer.parseInt(params[0]);
           int cols = Integer.parseInt(params[1]);
@@ -91,8 +91,25 @@ public class WordSearch{
           if (seed < 0 || seed > 1000){
             throw new Exception();
           }
-          WordSearch ws = new WordSearch(rows, cols, fileName, seed, false);
+          WordSearch ws = new WordSearch(rows, cols, fileName, seed);
           ws.fillRandomLetters();
+          System.out.println(ws);
+        }
+        catch(Exception e){
+          System.out.println("Formatting error. Review instructions");
+        }
+      }
+      else {
+        try{
+          int rows = Integer.parseInt(params[0]);
+          int cols = Integer.parseInt(params[1]);
+          String fileName = params[2];
+          int seed = Integer.parseInt(params[3]);
+          if (seed < 0 || seed > 1000){
+            throw new Exception();
+          }
+          WordSearch ws = new WordSearch(rows, cols, fileName, seed);
+          ws.formatAnswers();
           System.out.println(ws);
         }
         catch(Exception e){
