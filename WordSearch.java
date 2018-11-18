@@ -58,13 +58,11 @@ public class WordSearch{
       wordsToAdd = new ArrayList<String>();
       addAllWords();
       seed = randSeed;
-      randgen = new Random();
+      randgen = new Random(randSeed);
       readFile(fileName);
-      if (!key){
-        fillRandomLetters();
-      }
-      data.toString();
+
     }
+
 
     private void readFile(String fileName){
       try{
@@ -250,8 +248,21 @@ public class WordSearch{
       }
     }
 
+    public void formatAnswers(){
+      for(int row=0; row<data.length; row++){
+        for(int col=0; col<data[row].length; col++){
+          if(data[row][col] == '_'){
+            data[row][col] = ' ';
+          }
+        }
+      }
+    }
+
     private void fillRandomLetters(){
       int ran = randgen.nextInt() % 26;
+      if (ran < 0){
+        ran *= -1;
+      }
       char[] alphabet = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
       for (int x = 0; x < data.length; x++)
         for (int y = 0; y < data[0].length; y++){
