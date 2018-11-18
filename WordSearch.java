@@ -63,6 +63,26 @@ public class WordSearch{
 
     }
 
+    public static void main(String[] params){
+      if (params.length < 3){
+        System.out.println("Inadequete number of arguments");
+      }
+      if (params.length == 3){
+        try{
+          int rows = Integer.parseInt(params[0]);
+          int cols = Integer.parseInt(params[1]);
+          String fileName = params[2];
+          Random rand = new Random();
+          int randomseed = rand.nextInt();
+          WordSearch ws = new WordSearch(rows, cols, fileName, randomseed, false);
+          ws.fillRandomLetters();
+          System.out.println(ws);
+        }
+        catch(Exception e){
+          System.out.println("Formatting error. Review instructions");
+        }
+      }
+    }
 
     private void readFile(String fileName){
       try{
