@@ -82,6 +82,23 @@ public class WordSearch{
           System.out.println("Formatting error. Review instructions");
         }
       }
+      if (params.length == 4){
+        try{
+          int rows = Integer.parseInt(params[0]);
+          int cols = Integer.parseInt(params[1]);
+          String fileName = params[2];
+          int seed = Integer.parseInt(params[3]);
+          if (seed < 0 || seed > 1000){
+            throw new Exception();
+          }
+          WordSearch ws = new WordSearch(rows, cols, fileName, seed, false);
+          ws.fillRandomLetters();
+          System.out.println(ws);
+        }
+        catch(Exception e){
+          System.out.println("Formatting error. Review instructions");
+        }
+      }
     }
 
     private void readFile(String fileName){
