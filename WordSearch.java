@@ -54,6 +54,8 @@ public class WordSearch{
     public WordSearch( int rows, int cols, String fileName, int randSeed){
       data = new char[rows][cols];
       clear();
+      row = rows;
+      col = cols;
       wordsAdded = new ArrayList<String>();
       wordsToAdd = new ArrayList<String>();
       seed = randSeed;
@@ -286,34 +288,34 @@ public class WordSearch{
     }
 
     private void addAllWords() {
-      int colIncrement;
-      int rowIncrement;
       int r;
       int c;
-      while (wordsToAdd.size() > 0){
-        colIncrement = randgen.nextInt() % 2;
-        rowIncrement = randgen.nextInt() % 2;
-        if (rowIncrement == 1){
-          r = randgen.nextInt() % (row - wordsToAdd.get(0).length() + 1);
-        }
-        else if (rowIncrement == -1){
-          r = randgen.nextInt() % (row - wordsToAdd.get(0).length() + 1) + wordsToAdd.get(0).length();
-        }
-        else{
+      int impossiblewords = 0;
+      while (wordsToAdd.size() > 0 && impossiblewords == 0){
+        int fails = 0;
+        int colIncrement = randgen.nextInt() % 2;
+        int rowIncrement = randgen.nextInt() % 2;
+        boolean successfullyAdded = false;
+        while (fails < 1000 && successfullyAdded == false){
           r = randgen.nextInt() % row;
-        }
-        if (colIncrement == 1){
-          c = randgen.nextInt() % (col - wordsToAdd.get(0).length() + 1);
-        }
-        else if (colIncrement == -1){
-          c = randgen.nextInt() % (col - wordsToAdd.get(0).length() + 1) + wordsToAdd.get(0).length();
-        }
-        else {
-          c = randgen.nextInt() % col;
-        }
-        if (addWord(wordsToAdd.get(0), r, c, rowIncrement , colIncrement)){
-          wordsAdded.add(wordsToAdd.get(0));
-          wordsToAdd.remove(0);
+          c = randgen.nextInt() & col;
+          if (r < 0){
+            r *= -1;
+          }
+          if (c < 0){
+            c *= -1;
+          }
+          if (addWord(wordsToAdd.get(0), r, c, rowIncrement , colIncrement)){
+            wordsAdded.add(wordsToAdd.get(0));
+            wordsToAdd.remove(0);
+            successfullyAdded = true;
+          }
+          else{
+            fails ++;
+            if (fails > 1000){
+              impossiblewords ++;
+            }
+          }
         }
       }
     }
