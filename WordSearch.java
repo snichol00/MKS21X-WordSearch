@@ -65,7 +65,7 @@ public class WordSearch{
 
     public static void main(String[] params){
       if (params.length < 3){
-        System.out.println("Inadequete number of arguments");
+        System.out.println("usage: java WordSearch [rows cols filename [randomSeed [answers]]]");
       }
       else if (params.length == 3){
         try{
@@ -85,7 +85,7 @@ public class WordSearch{
           System.out.println(ws);
         }
         catch(Exception e){
-          System.out.println("Formatting error. Review instructions");
+          System.out.println("usage: java WordSearch [rows cols filename [randomSeed [answers]]]");
         }
       }
       else if (params.length == 4){
@@ -102,7 +102,7 @@ public class WordSearch{
           System.out.println(ws);
         }
         catch(Exception e){
-          System.out.println("Formatting error. Review instructions");
+          System.out.println("usage: java WordSearch [rows cols filename [randomSeed [answers]]]");
         }
       }
       else {
@@ -119,7 +119,7 @@ public class WordSearch{
           System.out.println(ws);
         }
         catch(Exception e){
-          System.out.println("Formatting error. Review instructions");
+          System.out.println("usage: java WordSearch [rows cols filename [randomSeed [answers]]]");
         }
       }
     }
