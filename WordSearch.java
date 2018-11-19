@@ -53,15 +53,14 @@ public class WordSearch{
     //  Use the random seed specified.
     public WordSearch( int rows, int cols, String fileName, int randSeed){
       data = new char[rows][cols];
-      clear();
       row = rows;
       col = cols;
+      clear();
       wordsAdded = new ArrayList<String>();
       wordsToAdd = new ArrayList<String>();
       seed = randSeed;
       randgen = new Random(randSeed);
       readFile(fileName);
-
     }
 
     public static void main(String[] params){
@@ -75,7 +74,10 @@ public class WordSearch{
           String fileName = params[2];
           Random rand = new Random();
           int randomseed = rand.nextInt() % 10001;
-          if (randomseed < 0 || randomseed > 10000){
+          if (randomseed < 0){
+            randomseed *= -1;
+          }
+          if (randomseed > 10000){
             throw new Exception();
           }
           WordSearch ws = new WordSearch(numrows, numcols, fileName, randomseed);
@@ -159,14 +161,14 @@ public class WordSearch{
       }
       output += "Words: ";
       for(int x = 0; x < wordsAdded.size(); x++){
-         if(x != wordsAdded.size() - 1){
+         if(x != wordsAdded.size()){
            output += wordsAdded.get(x) + ",";
          }
          else{
            output += wordsAdded.get(x);
          }
        }
-       output += "Seed: " + seed;
+       output += "\nSeed: " + seed;
       return output;
     }
 
@@ -288,36 +290,28 @@ public class WordSearch{
     }
 
     private void addAllWords() {
-      int r;
-      int c;
-      int impossiblewords = 0;
-      /*while (wordsToAdd.size() > 0 && impossiblewords < 25){
-        int fails = 0;
-        int colIncrement = randgen.nextInt() % 2;
-        int rowIncrement = randgen.nextInt() % 2;
-        boolean successfullyAdded = false;
-        while (fails < 100 && successfullyAdded == false){
-          r = randgen.nextInt() % row;
-          c = randgen.nextInt() & col;
+      String word;
+      for (int x = 0; x < wordsToAdd.size(); x++){
+        word = wordsToAdd.get(x);
+        for (int y = 0; y < 1000; y++){
+          int colIncrement = randgen.nextInt() % 2;
+          int rowIncrement = randgen.nextInt() % 2;
+          int r = randgen.nextInt() % row;
+          int c = randgen.nextInt() % col;
           if (r < 0){
             r *= -1;
           }
           if (c < 0){
             c *= -1;
           }
-          if (addWord(wordsToAdd.get(0), r, c, rowIncrement , colIncrement)){
-            wordsAdded.add(wordsToAdd.get(0));
-            wordsToAdd.remove(0);
-            successfullyAdded = true;
-          }
-          else{
-            fails ++;
-            if (fails > 100){
-              impossiblewords ++;
-            }
+          if (addWord(word.toUpperCase(), r, c, rowIncrement , colIncrement)){
+            wordsAdded.add(word);
+            wordsToAdd.remove(x);
+            //x--;
+            y = 1000;
           }
         }
-      }*/
+      }
     }
 
     public void formatAnswers(){
@@ -331,13 +325,14 @@ public class WordSearch{
     }
 
     private void fillRandomLetters(){
-      int ran = randgen.nextInt() % 26;
-      if (ran < 0){
-        ran *= -1;
-      }
+      int ran;
       char[] alphabet = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
       for (int x = 0; x < data.length; x++)
         for (int y = 0; y < data[0].length; y++){
+          ran = randgen.nextInt() % 26;
+          if (ran < 0){
+            ran *= -1;
+          }
           if (data[x][y] == '_'){
             data[x][y] = alphabet[ran];
           }
