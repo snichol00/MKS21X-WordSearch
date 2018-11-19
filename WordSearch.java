@@ -96,8 +96,6 @@ public class WordSearch{
             throw new Exception();
           }
           WordSearch ws = new WordSearch(numrows, numcols, fileName, seed);
-          System.out.println("coolio");
-          System.out.println("cool");
           ws.fillRandomLetters();
           System.out.println(ws);
         }
@@ -153,10 +151,11 @@ public class WordSearch{
     public String toString(){
       String output = new String("");
       for (int x = 0; x < row; x++){
+        output += "|";
         for (int y = 0; y < col; y++){
           output += data[x][y] + " ";
         }
-        output += "\n";
+        output += "|\n";
       }
       output += "Words: ";
       for(int x = 0; x < wordsAdded.size(); x++){
@@ -167,6 +166,7 @@ public class WordSearch{
            output += wordsAdded.get(x);
          }
        }
+       output += "Seed: " + seed;
       return output;
     }
 
@@ -291,12 +291,12 @@ public class WordSearch{
       int r;
       int c;
       int impossiblewords = 0;
-      while (wordsToAdd.size() > 0 && impossiblewords == 0){
+      /*while (wordsToAdd.size() > 0 && impossiblewords < 25){
         int fails = 0;
         int colIncrement = randgen.nextInt() % 2;
         int rowIncrement = randgen.nextInt() % 2;
         boolean successfullyAdded = false;
-        while (fails < 1000 && successfullyAdded == false){
+        while (fails < 100 && successfullyAdded == false){
           r = randgen.nextInt() % row;
           c = randgen.nextInt() & col;
           if (r < 0){
@@ -312,12 +312,12 @@ public class WordSearch{
           }
           else{
             fails ++;
-            if (fails > 1000){
+            if (fails > 100){
               impossiblewords ++;
             }
           }
         }
-      }
+      }*/
     }
 
     public void formatAnswers(){
